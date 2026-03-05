@@ -1,5 +1,7 @@
 package vod.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,8 @@ public class Theatre {
     private int id;
     private String name;
     private String logo;
+
+    @JsonIgnore
     private List<Movie> movies = new ArrayList<>();
 
     public Theatre(int id, String name, String logo) {
