@@ -1,15 +1,22 @@
 package vod.web;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
 import vod.model.Movie;
 import vod.model.Theatre;
 import vod.service.MovieService;
 import vod.service.TheatreService;
 
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @RestController
@@ -19,8 +26,9 @@ public class TheatreRest {
 
     private final TheatreService theatreService;
     private final MovieService movieService;
+    private final MessageSource messageSource;
+    private final LocaleResolver localeResolver;
 
-    // GET wszystkich teatrów, opcjonalnie filtrowanie po nazwie
     @GetMapping("/theatres")
     public List<Theatre> getAllTheatres(
             @RequestParam(required = false) String name,
@@ -34,7 +42,6 @@ public class TheatreRest {
         return theatreService.getAllTheatres();
     }
 
-    // GET jednego teatru po ID – 404 jeśli nie istnieje
     @GetMapping("/theatres/{id}")
     public ResponseEntity<Theatre> getTheatreById(@PathVariable("id") int id) {
         log.info("GET /webapi/theatres/{}", id);
@@ -45,7 +52,6 @@ public class TheatreRest {
         return ResponseEntity.ok(t);
     }
 
-    // GET teatrów grających dany spektakl
     @GetMapping("/movies/{id}/theatres")
     public ResponseEntity<List<Theatre>> getTheatresByMovie(@PathVariable("id") int id) {
         log.info("GET /webapi/movies/{}/theatres", id);
@@ -56,11 +62,22 @@ public class TheatreRest {
         return ResponseEntity.ok(theatreService.getTheatresByMovie(movie));
     }
 
-    // POST – dodanie nowego teatru, zwraca 201
     @PostMapping("/theatres")
-    public ResponseEntity<Theatre> addTheatre(@RequestBody Theatre theatre) {
+    public ResponseEntity<?> addTheatre(
+            @Validated @RequestBody Theatre theatre,
+            Errors errors,
+            HttpServletRequest request) {
+
         log.info("POST /webapi/theatres, body={}", theatre);
-        Theatre saved = theatreService.addTheatre(theatre);
-        return ResponseEntity.status(201).body(saved);
+
+        if (errors.hasErrors()) {
+            Locale locale = localeResolver.resolveLocale(request);
+            String errorMessage = errors.getAllErrors().stream()
+                    .map(oe -> messageSource.getMessage(oe.getCode(), null, locale))
+                    .reduce("errors:\n", (accu, msg) -> accu + msg + "\n");
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(theatreService.addTheatre(theatre));
     }
 }

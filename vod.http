@@ -1,37 +1,38 @@
-### GET wszystkie teatry
-GET http://localhost:8080/webapi/theatres
-Accept: application/json
-
-### GET teatr po ID (istnieje)
-GET http://localhost:8080/webapi/theatres/1
-Accept: application/json
-
-### GET teatr po ID (nie istnieje – oczekiwane 404)
-GET http://localhost:8080/webapi/theatres/99
-Accept: application/json
-
-### GET teatry jako XML
-GET http://localhost:8080/webapi/theatres/1
-Accept: application/xml
-
-### GET teatry grające spektakl o ID=1
-GET http://localhost:8080/webapi/movies/1/theatres
-Accept: application/json
-
-### GET teatry filtrowane po nazwie (RequestParam)
-GET http://localhost:8080/webapi/theatres?name=Narodowy
-Accept: application/json
-
-### GET z custom headerem
-GET http://localhost:8080/webapi/theatres
-Accept: application/json
-X-Client-Id: klient-123
-
-### POST – dodanie nowego teatru (oczekiwane 201)
+### POST poprawny (201)
 POST http://localhost:8080/webapi/theatres
 Content-Type: application/json
+Accept-Language: pl
 
 {
   "name": "Teatr Nowy",
+  "logo": "https://example.com/nowy.png"
+}
+
+### POST błędny – za krótka nazwa (400 po polsku)
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+Accept-Language: pl
+
+{
+  "name": "X",
+  "logo": "https://example.com/nowy.png"
+}
+
+### POST błędny – po włosku
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+Accept-Language: it
+
+{
+  "name": "X",
+  "logo": "https://example.com/nowy.png"
+}
+
+### POST błędny – brak name (null, po angielsku)
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+Accept-Language: en
+
+{
   "logo": "https://example.com/nowy.png"
 }
