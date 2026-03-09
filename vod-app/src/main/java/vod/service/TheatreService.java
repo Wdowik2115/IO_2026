@@ -9,4 +9,5 @@ public interface TheatreService {
     List<Theatre> getAllTheatres();
     List<Theatre> getTheatresByMovie(Movie m);
     List<Movie> getMoviesInTheatre(Theatre t);
+    Theatre addTheatre(Theatre t);
 }

@@ -1,6 +1,6 @@
 package vod.service.impl;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import vod.model.Movie;
 import vod.model.Theatre;
 import vod.repository.MovieDao;
@@ -10,7 +10,7 @@ import vod.service.TheatreService;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Component
+@Service
 public class TheatreServiceBean implements TheatreService {
 
     private static final Logger log = Logger.getLogger(TheatreService.class.getName());
@@ -46,5 +46,11 @@ public class TheatreServiceBean implements TheatreService {
     public List<Movie> getMoviesInTheatre(Theatre t) {
         log.info("searching movies in theatre " + t.getId());
         return movieDao.findByTheatre(t);
+    }
+
+    @Override
+    public Theatre addTheatre(Theatre t) {
+        log.info("about to add theatre " + t);
+        return theatreDao.add(t);
     }
 }

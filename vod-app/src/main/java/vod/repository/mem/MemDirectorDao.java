@@ -1,12 +1,12 @@
 package vod.repository.mem;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import vod.model.Director;
 import vod.repository.DirectorDao;
 
 import java.util.List;
 
-@Component
+@Repository
 public class MemDirectorDao implements DirectorDao {
 
     @Override
