@@ -1,0 +1,41 @@
+### 1. Pobierz wszystkie filmy
+GET http://localhost:8080/webapi/movies
+Accept: application/json
+
+###
+
+### 2. Pobierz film po ID
+GET http://localhost:8080/webapi/movies/1
+Accept: application/json
+
+###
+
+### 3. Filmy grane w kinie nr 1
+GET http://localhost:8080/webapi/theatres/1/movies
+Accept: application/json
+
+###
+
+### 4. Dodaj nowy film (poprawny request)
+POST http://localhost:8080/webapi/movies
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "poster": "https://example.com/inception.jpg",
+  "rating": 4.8,
+  "directorId": 1
+}
+
+###
+
+### 5. Dodaj film BEZ tytułu (test walidacji — powinno zwrócić 400)
+POST http://localhost:8080/webapi/movies
+Content-Type: application/json
+
+{
+  "title": "",
+  "poster": "https://example.com/inception.jpg",
+  "rating": 4.8,
+  "directorId": 1
+}

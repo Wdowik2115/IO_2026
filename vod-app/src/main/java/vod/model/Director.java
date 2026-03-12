@@ -1,12 +1,16 @@
 package vod.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Director {
+
     private int id;
     private String firstName;
     private String lastName;
+
+    @JsonIgnore
     private List<Movie> movies = new ArrayList<>();
 
     public Director(int id, String firstName, String lastName) {
@@ -17,7 +21,6 @@ public class Director {
 
     public Director() {}
 
-    // get/settery
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getFirstName() { return firstName; }
@@ -30,6 +33,6 @@ public class Director {
 
     @Override
     public String toString() {
-        return "Director{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + '}';
+        return "Director{id=" + id + ", firstName='" + firstName + "', lastName='" + lastName + "'}";
     }
 }
