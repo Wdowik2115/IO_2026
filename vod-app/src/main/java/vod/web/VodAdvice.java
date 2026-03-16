@@ -1,19 +1,39 @@
+// VodAdvice.java (pełna zaktualizowana wersja)
 package vod.web;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
-@RequiredArgsConstructor
 public class VodAdvice {
 
-    // Jeśli masz własne walidatory (np. CinemaValidator), wstrzyknij je tutaj
-    // i zarejestruj poniżej. Na razie przykład bez własnego walidatora:
+    private final TheatreValidator theatreValidator;
+    private final MovieValidator movieValidator;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        // binder.addValidators(twojWalidator); // odkomentuj gdy dodasz własny walidator
+    public VodAdvice(TheatreValidator theatreValidator, MovieValidator movieValidator) {
+        this.theatreValidator = theatreValidator;
+        this.movieValidator = movieValidator;
+    }
+
+    @InitBinder("theatre")          // tylko dla obiektów "theatre" w TheatreRest
+    public void initTheatreBinder(WebDataBinder binder) {
+        binder.addValidators(theatreValidator);
+    }
+
+    @InitBinder("movieDTO")         // tylko dla obiektów "movieDTO" w MovieRest
+    public void initMovieBinder(WebDataBinder binder) {
+        binder.addValidators(movieValidator);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArg(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body("IllegalArgument: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntime(RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Error: " + ex.getMessage());
     }
 }

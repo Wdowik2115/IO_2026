@@ -25,49 +25,37 @@ public class MovieRest {
     private final MovieService movieService;
     private final TheatreService theatreService;
 
-    // 1. GET /webapi/movies — wszystkie filmy
+    // GET /webapi/movies — wszystkie filmy
     @GetMapping("movies")
     public ResponseEntity<List<Movie>> getAllMovies() {
         log.info("GET /webapi/movies");
         return ResponseEntity.ok(movieService.getAllMovies());
     }
 
-    // 2. GET /webapi/movies/{id} — film po ID
+    // GET /webapi/movies/{id} — film po ID
     @GetMapping("movies/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable int id) {
         log.info("GET /webapi/movies/{}", id);
         Movie movie = movieService.getMovieById(id);
-        if (movie != null) {
-            return ResponseEntity.ok(movie);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        if (movie != null) return ResponseEntity.ok(movie);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    // 3. GET /webapi/theatres/{theatreId}/movies — filmy grane w danym kinie
-    @GetMapping("theatres/{theatreId}/movies")
-    public ResponseEntity<List<Movie>> getMoviesInTheatre(@PathVariable int theatreId) {
-        log.info("GET /webapi/theatres/{}/movies", theatreId);
-        Theatre theatre = theatreService.getTheatreById(theatreId);
-        if (theatre == null) {
-            return ResponseEntity.notFound().build();
-        }
-        List<Movie> movies = theatreService.getMoviesInTheatre(theatre);
-        log.info("{} movies found in theatre {}", movies.size(), theatre.getName());
-        return ResponseEntity.ok(movies);
-    }
+    // GET /webapi/theatres/{theatreId}/movies — filmy w danym kinie
+    // (ten sam endpoint co w TheatreRest — możesz zostawić tylko w jednym miejscu)
 
-    // 4. POST /webapi/movies — dodaj nowy film (z walidacją i DTO)
+    // POST /webapi/movies — dodaj nowy film
     @PostMapping("movies")
-    public ResponseEntity<?> addMovie(@Validated @RequestBody MovieDTO movieDTO, Errors errors) {
+    public ResponseEntity<?> addMovie(
+            @Validated @RequestBody MovieDTO movieDTO,
+            Errors errors) {
         log.info("POST /webapi/movies, body: {}", movieDTO);
         if (errors.hasErrors()) {
             String errorMessages = errors.getAllErrors().stream()
                     .map(e -> e.getDefaultMessage())
-                    .reduce("Errors: ", (acc, msg) -> acc + " | " + msg);
+                    .reduce("Errors:", (acc, msg) -> acc + " | " + msg);
             return ResponseEntity.badRequest().body(errorMessages);
         }
-
         Movie movie = new Movie();
         movie.setTitle(movieDTO.getTitle());
         movie.setPoster(movieDTO.getPoster());
@@ -76,7 +64,6 @@ public class MovieRest {
 
         Movie saved = movieService.addMovie(movie);
         log.info("New movie added: {}", saved);
-
         return ResponseEntity
                 .created(
                         ServletUriComponentsBuilder

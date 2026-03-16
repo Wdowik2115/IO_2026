@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sztuki</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav>
+    <a th:href="@{/theatres-view}">🎭 Teatry</a>
+    <a th:href="@{/movies-view}">🎬 Sztuki</a>
+    <a th:href="@{/directors-view}">🎥 Reżyserzy</a>
+</nav>
+
+<h2 th:text="${title}">Sztuki</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Poster</th>
+        <th>Tytuł</th>
+        <th>Reżyser</th>
+        <th>Ocena</th>
+        <th>Teatry</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${movies}">
+        <td>
+            <img th:src="${m.poster}" alt="poster"
+                 th:if="${m.poster != null and !#strings.isEmpty(m.poster)}"/>
+        </td>
+        <td th:text="${m.title}"></td>
+        <td>
+            <a th:if="${m.director != null}"
+               th:href="@{/movies-view(directorId=${m.director.id})}"
+               th:text="${m.director.firstName + ' ' + m.director.lastName}">
+            </a>
+        </td>
+        <td class="rating" th:text="${m.rating}"></td>
+        <td><a th:href="@{/theatres-view(movieId=${m.id})}">🔍</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

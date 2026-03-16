@@ -16,7 +16,7 @@ Accept: application/json
 
 ###
 
-### 4. Dodaj nowy film (poprawny request)
+### 4. Dodaj nowy film
 POST http://localhost:8080/webapi/movies
 Content-Type: application/json
 
@@ -39,3 +39,71 @@ Content-Type: application/json
   "rating": 4.8,
   "directorId": 1
 }
+### Dodaj nowe kino
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+
+{
+  "name": "Helios",
+  "logo": "https://example.com/helios.png"
+}
+
+###
+
+### Test walidacji — za krótka nazwa (powinno zwrócić 400)
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+
+{
+  "name": "X",
+  "logo": "https://example.com/helios.png"
+}
+
+### 6. Test ExceptionHandler — phrase=foo (powinno zwrócić 400)
+GET http://localhost:8080/webapi/theatres?name=foo
+Accept: application/json
+
+###
+
+### 7. Pobierz wszystkie kina (żeby sprawdzić istniejące nazwy)
+GET http://localhost:8080/webapi/theatres
+Accept: application/json
+
+###
+
+### 8. Dodaj duplikat kina (powinno zwrócić 400 — theatre.duplicate)
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+
+{
+  "name": "Helios",
+  "logo": "https://example.com/helios.png"
+}
+
+###
+
+### 9. Dodaj film z nieistniejącym reżyserem (powinno zwrócić 400 — movie.director.missing)
+POST http://localhost:8080/webapi/movies
+Content-Type: application/json
+
+{
+  "title": "GhostMovie",
+  "poster": "https://example.com/ghost.jpg",
+  "rating": 3.5,
+  "directorId": 9999
+}
+
+###
+
+### 10. Dodaj film z istniejącym reżyserem (powinno zwrócić 201)
+POST http://localhost:8080/webapi/movies
+Content-Type: application/json
+
+{
+  "title": "ValidMovie",
+  "poster": "https://example.com/valid.jpg",
+  "rating": 4.5,
+  "directorId": 1
+}
+
+###

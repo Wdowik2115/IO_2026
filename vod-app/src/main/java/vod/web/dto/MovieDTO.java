@@ -12,7 +12,7 @@ public class MovieDTO {
 
     private String poster;
 
-    private double rating;
+    private float rating;
 
     @NotNull
     private Integer directorId;
