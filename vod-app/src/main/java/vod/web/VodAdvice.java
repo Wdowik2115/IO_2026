@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.*;
 @ControllerAdvice
 public class VodAdvice {
 
-    private final TheatreValidator theatreValidator;
+    private final TheatreValidator TheatreValidator;
     private final MovieValidator movieValidator;
 
-    public VodAdvice(TheatreValidator theatreValidator, MovieValidator movieValidator) {
-        this.theatreValidator = theatreValidator;
+    public VodAdvice(TheatreValidator TheatreValidator, MovieValidator movieValidator) {
+        this.TheatreValidator = TheatreValidator;
         this.movieValidator = movieValidator;
     }
 
-    @InitBinder("theatre")          // tylko dla obiektów "theatre" w TheatreRest
+    @InitBinder("Theatre")          // tylko dla obiektów "Theatre" w TheatreRest
     public void initTheatreBinder(WebDataBinder binder) {
-        binder.addValidators(theatreValidator);
+        binder.addValidators(TheatreValidator);
     }
 
     @InitBinder("movieDTO")         // tylko dla obiektów "movieDTO" w MovieRest

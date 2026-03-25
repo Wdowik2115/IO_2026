@@ -25,7 +25,7 @@
     </thead>
     <tbody>
     <tr th:each="t : ${theatres}">
-        <td><img th:src="${t.logo}" alt="logo"/></td>
+        <td><img th:src="${t.logo}" alt="logo" style="width: 100px;"/></td>
         <td th:text="${t.name}"></td>
         <td><a th:href="@{/movies-view(theatreId=${t.id})}">🔍</a></td>
     </tr>

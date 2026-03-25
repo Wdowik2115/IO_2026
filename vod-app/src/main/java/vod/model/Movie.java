@@ -1,24 +1,38 @@
 package vod.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "movie")
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotBlank
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "poster")
     private String poster;
 
+    @ManyToOne
+    @JoinColumn(name = "director_id")
     private Director director;
 
+    @Column(name = "rating")
     private float rating;
 
     @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "movie_theatre",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "theatre_id", referencedColumnName = "id"))
     private List<Theatre> theatres = new ArrayList<>();
 
     public Movie(int id, String title, String poster, Director director, float rating) {

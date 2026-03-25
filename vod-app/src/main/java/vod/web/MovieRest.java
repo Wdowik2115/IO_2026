@@ -1,7 +1,7 @@
 package vod.web;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -16,14 +16,19 @@ import vod.web.dto.MovieDTO;
 
 import java.util.List;
 
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("webapi")
 public class MovieRest {
 
+    private static final Logger log = LoggerFactory.getLogger(MovieRest.class);
+
     private final MovieService movieService;
     private final TheatreService theatreService;
+
+    public MovieRest(MovieService movieService, TheatreService theatreService) {
+        this.movieService = movieService;
+        this.theatreService = theatreService;
+    }
 
     // GET /webapi/movies — wszystkie filmy
     @GetMapping("movies")
@@ -41,7 +46,7 @@ public class MovieRest {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    // GET /webapi/theatres/{theatreId}/movies — filmy w danym kinie
+    // GET /webapi/Theatres/{TheatreId}/movies — filmy w danym kinie
     // (ten sam endpoint co w TheatreRest — możesz zostawić tylko w jednym miejscu)
 
     // POST /webapi/movies — dodaj nowy film

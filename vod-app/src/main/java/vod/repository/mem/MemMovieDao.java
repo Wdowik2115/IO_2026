@@ -9,7 +9,6 @@ import vod.repository.MovieDao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Repository
 public class MemMovieDao implements MovieDao {
 
     @Override

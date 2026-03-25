@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class SampleData {
-    static List<Theatre> theatres = new ArrayList<>();
+    static List<Theatre> Theatres = new ArrayList<>();
     static List<Director> directors = new ArrayList<>();
     static List<Movie> movies = new ArrayList<>();
 
@@ -54,7 +54,7 @@ class SampleData {
 
         directors.add(dejmek); directors.add(jarocki); directors.add(warlikowski); directors.add(lupa);
 
-        theatres.add(narodowy); theatres.add(wybrzeze); theatres.add(stary); theatres.add(wspolczesny);
+        Theatres.add(narodowy); Theatres.add(wybrzeze); Theatres.add(stary); Theatres.add(wspolczesny);
     }
 
     private static void bind(Theatre t, Movie m) {

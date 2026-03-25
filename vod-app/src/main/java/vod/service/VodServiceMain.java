@@ -9,16 +9,16 @@ import java.util.List;
 public class VodServiceMain {
 
     public static void main(String[] args) {
-        System.out.println("Let's find theatres!");
+        System.out.println("Let's find Theatres!");
 
         ApplicationContext context = new AnnotationConfigApplicationContext("vod");
 
         // Pobierz serwis z kontekstu
         TheatreService service = context.getBean(TheatreService.class);
 
-        List<Theatre> theatres = service.getAllTheatres();
-        System.out.println(theatres.size() + " theatres found:");
-        theatres.forEach(System.out::println);
+        List<Theatre> Theatres = service.getAllTheatres();
+        System.out.println(Theatres.size() + " Theatres found:");
+        Theatres.forEach(System.out::println);
 
         // Demonstracja singleton scope
         TheatreService service2 = context.getBean(TheatreService.class);

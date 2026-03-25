@@ -23,11 +23,11 @@ public class TheatreValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Theatre theatre = (Theatre) target;
+        Theatre Theatre = (Theatre) target;
         boolean duplicate = theatreService.getAllTheatres().stream()
-                .anyMatch(t -> t.getName().equalsIgnoreCase(theatre.getName()));
+                .anyMatch(t -> t.getName().equalsIgnoreCase(Theatre.getName()));
         if (duplicate) {
-            errors.reject("theatre.duplicate");
+            errors.reject("Theatre.duplicate");
         }
     }
 }

@@ -1,8 +1,8 @@
 package vod;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -12,12 +12,16 @@ import vod.service.TheatreService;
 
 import java.util.List;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 public class VodComponent implements CommandLineRunner, ApplicationListener<ContextRefreshedEvent> {
 
+    private static final Logger log = LoggerFactory.getLogger(VodComponent.class);
+
     private final TheatreService theatreService;
+
+    public VodComponent(TheatreService theatreService) {
+        this.theatreService = theatreService;
+    }
 
     @PostConstruct
     public void init() {
@@ -33,8 +37,8 @@ public class VodComponent implements CommandLineRunner, ApplicationListener<Cont
     public void run(String... args) {
         log.info(">>> CommandLineRunner.run: aplikacja uruchomiona");
 
-        List<Theatre> theatres = theatreService.getAllTheatres();
-        log.info("{} theatres found:", theatres.size());
-        theatres.forEach(t -> log.info("  {}", t));
+        List<Theatre> Theatres = theatreService.getAllTheatres();
+        log.info("{} Theatres found:", Theatres.size());
+        Theatres.forEach(t -> log.info("  {}", t));
     }
 }

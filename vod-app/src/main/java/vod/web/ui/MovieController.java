@@ -1,6 +1,5 @@
 package vod.web.ui;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +8,15 @@ import vod.service.MovieService;
 import vod.service.TheatreService;
 
 @Controller
-@RequiredArgsConstructor
 public class MovieController {
 
     private final MovieService movieService;
     private final TheatreService theatreService;
+
+    public MovieController(MovieService movieService, TheatreService theatreService) {
+        this.movieService = movieService;
+        this.theatreService = theatreService;
+    }
 
     @GetMapping("movies-view")
     public String getMoviesView(
@@ -22,9 +25,9 @@ public class MovieController {
             Model model) {
 
         if (theatreId != null) {
-            var theatre = theatreService.getTheatreById(theatreId);
-            model.addAttribute("movies", theatreService.getMoviesInTheatre(theatre));
-            model.addAttribute("title", "Spektakle w teatrze: " + theatre.getName());
+            var Theatre = theatreService.getTheatreById(theatreId);
+            model.addAttribute("movies", theatreService.getMoviesInTheatre(Theatre));
+            model.addAttribute("title", "Spektakle w teatrze: " + Theatre.getName());
         } else if (directorId != null) {
             var director = movieService.getDirectorById(directorId);
             model.addAttribute("movies", movieService.getMoviesByDirector(director));

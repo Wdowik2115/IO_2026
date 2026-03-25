@@ -28,7 +28,7 @@
     <tbody>
     <tr th:each="m : ${movies}">
         <td>
-            <img th:src="${m.poster}" alt="poster"
+            <img th:src="${m.poster}" alt="poster" style="width: 80px;"
                  th:if="${m.poster != null and !#strings.isEmpty(m.poster)}"/>
         </td>
         <td th:text="${m.title}"></td>

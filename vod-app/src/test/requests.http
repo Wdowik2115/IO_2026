@@ -11,7 +11,7 @@ Accept: application/json
 ###
 
 ### 3. Filmy grane w kinie nr 1
-GET http://localhost:8080/webapi/theatres/1/movies
+GET http://localhost:8080/webapi/Cinemas/1/movies
 Accept: application/json
 
 ###
@@ -40,7 +40,7 @@ Content-Type: application/json
   "directorId": 1
 }
 ### Dodaj nowe kino
-POST http://localhost:8080/webapi/theatres
+POST http://localhost:8080/webapi/Cinemas
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 ###
 
 ### Test walidacji — za krótka nazwa (powinno zwrócić 400)
-POST http://localhost:8080/webapi/theatres
+POST http://localhost:8080/webapi/Cinemas
 Content-Type: application/json
 
 {
@@ -60,19 +60,19 @@ Content-Type: application/json
 }
 
 ### 6. Test ExceptionHandler — phrase=foo (powinno zwrócić 400)
-GET http://localhost:8080/webapi/theatres?name=foo
+GET http://localhost:8080/webapi/Cinemas?name=foo
 Accept: application/json
 
 ###
 
 ### 7. Pobierz wszystkie kina (żeby sprawdzić istniejące nazwy)
-GET http://localhost:8080/webapi/theatres
+GET http://localhost:8080/webapi/Cinemas
 Accept: application/json
 
 ###
 
-### 8. Dodaj duplikat kina (powinno zwrócić 400 — theatre.duplicate)
-POST http://localhost:8080/webapi/theatres
+### 8. Dodaj duplikat kina (powinno zwrócić 400 — Cinema.duplicate)
+POST http://localhost:8080/webapi/Cinemas
 Content-Type: application/json
 
 {

@@ -7,7 +7,6 @@ import vod.repository.TheatreDao;
 
 import java.util.List;
 
-@Component
 public class DummyTheatreDao implements TheatreDao {
 
     @Override
@@ -26,7 +25,7 @@ public class DummyTheatreDao implements TheatreDao {
     }
 
     @Override
-    public Theatre add(Theatre t) {
+    public Theatre save(Theatre t) {
         return null;
     }
 }

@@ -6,7 +6,6 @@ import vod.repository.DirectorDao;
 
 import java.util.List;
 
-@Repository
 public class MemDirectorDao implements DirectorDao {
 
     @Override

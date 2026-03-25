@@ -2,6 +2,7 @@ package vod.service;
 
 import vod.model.Movie;
 import vod.model.Theatre;
+
 import java.util.List;
 
 public interface TheatreService {

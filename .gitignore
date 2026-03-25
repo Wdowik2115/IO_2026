@@ -1,3 +1,6 @@
-**/target
-**/*.iml
-**/.idea
+docker-vod/mysql/data/
+target/
+**/target/
+*.log
+.idea/
+*.class

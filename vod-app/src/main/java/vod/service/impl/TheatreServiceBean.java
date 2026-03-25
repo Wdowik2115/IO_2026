@@ -19,38 +19,38 @@ public class TheatreServiceBean implements TheatreService {
     private MovieDao movieDao;
 
     public TheatreServiceBean(TheatreDao theatreDao, MovieDao movieDao) {
-        log.info("creating theatre service bean");
+        log.info("creating Theatre service bean");
         this.theatreDao = theatreDao;
         this.movieDao = movieDao;
     }
 
     @Override
     public Theatre getTheatreById(int id) {
-        log.info("searching theatre by id " + id);
+        log.info("searching Theatre by id " + id);
         return theatreDao.findById(id);
     }
 
     @Override
     public List<Theatre> getAllTheatres() {
-        log.info("searching all theatres");
+        log.info("searching all Theatres");
         return theatreDao.findAll();
     }
 
     @Override
     public List<Theatre> getTheatresByMovie(Movie m) {
-        log.info("searching theatres by movie " + m.getId());
+        log.info("searching Theatres by movie " + m.getId());
         return theatreDao.findByMovie(m);
     }
 
     @Override
     public List<Movie> getMoviesInTheatre(Theatre t) {
-        log.info("searching movies in theatre " + t.getId());
+        log.info("searching movies in Theatre " + t.getId());
         return movieDao.findByTheatre(t);
     }
 
     @Override
     public Theatre addTheatre(Theatre t) {
-        log.info("about to add theatre " + t);
-        return theatreDao.add(t);
+        log.info("about to add Theatre " + t);
+        return theatreDao.save(t);
     }
 }

@@ -1,8 +1,8 @@
 package vod.web;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +19,30 @@ import vod.service.TheatreService;
 import java.util.List;
 import java.util.Locale;
 
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("webapi")
 public class TheatreRest {
+
+    private static final Logger log = LoggerFactory.getLogger(TheatreRest.class);
 
     private final TheatreService theatreService;
     private final MovieService movieService;
     private final MessageSource messageSource;
     private final LocaleResolver localeResolver;
 
-    // GET /webapi/theatres — wszystkie kina (opcjonalnie filtrowane po nazwie)
+    public TheatreRest(TheatreService theatreService, MovieService movieService, MessageSource messageSource, LocaleResolver localeResolver) {
+        this.theatreService = theatreService;
+        this.movieService = movieService;
+        this.messageSource = messageSource;
+        this.localeResolver = localeResolver;
+    }
+
+    // GET /webapi/Theatres — wszystkie kina (opcjonalnie filtrowane po nazwie)
     @GetMapping("theatres")
     public List<Theatre> getAllTheatres(
             @RequestParam(required = false) String name,
             @RequestHeader(value = "X-Client-Id", required = false) String clientId) {
-        log.info("GET /webapi/theatres, name={}, X-Client-Id={}", name, clientId);
+        log.info("GET /webapi/Theatres, name={}, X-Client-Id={}", name, clientId);
 
         if ("foo".equals(name)) {
             throw new RuntimeException("Illegal search phrase: foo");
@@ -49,40 +56,40 @@ public class TheatreRest {
         return theatreService.getAllTheatres();
     }
 
-    // GET /webapi/theatres/{id} — kino po ID
+    // GET /webapi/Theatres/{id} — kino po ID
     @GetMapping("theatres/{id}")
     public ResponseEntity<Theatre> getTheatreById(@PathVariable int id) {
-        log.info("GET /webapi/theatres/{}", id);
+        log.info("GET /webapi/Theatres/{}", id);
         Theatre t = theatreService.getTheatreById(id);
         if (t == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(t);
     }
 
-    // GET /webapi/theatres/{id}/movies — filmy grane w danym kinie
+    // GET /webapi/Theatres/{id}/movies — filmy grane w danym kinie
     @GetMapping("theatres/{id}/movies")
     public ResponseEntity<List<Movie>> getMoviesInTheatre(@PathVariable int id) {
-        log.info("GET /webapi/theatres/{}/movies", id);
-        Theatre theatre = theatreService.getTheatreById(id);
-        if (theatre == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(theatreService.getMoviesInTheatre(theatre));
+        log.info("GET /webapi/Theatres/{}/movies", id);
+        Theatre Theatre = theatreService.getTheatreById(id);
+        if (Theatre == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(theatreService.getMoviesInTheatre(Theatre));
     }
 
-    // GET /webapi/movies/{id}/theatres — kina w których grany jest dany film
+    // GET /webapi/movies/{id}/Theatres — kina w których grany jest dany film
     @GetMapping("movies/{id}/theatres")
     public ResponseEntity<List<Theatre>> getTheatresByMovie(@PathVariable int id) {
-        log.info("GET /webapi/movies/{}/theatres", id);
+        log.info("GET /webapi/movies/{}/Theatres", id);
         Movie movie = movieService.getMovieById(id);
         if (movie == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(theatreService.getTheatresByMovie(movie));
     }
 
-    // POST /webapi/theatres — dodaj nowe kino
+    // POST /webapi/Theatres — dodaj nowe kino
     @PostMapping("theatres")
     public ResponseEntity<?> addTheatre(
-            @Validated @RequestBody Theatre theatre,
+            @Validated @RequestBody Theatre Theatre,
             Errors errors,
             HttpServletRequest request) {
-        log.info("POST /webapi/theatres, body: {}", theatre);
+        log.info("POST /webapi/Theatres, body: {}", Theatre);
         if (errors.hasErrors()) {
             Locale locale = localeResolver.resolveLocale(request);
             String errorMessage = errors.getAllErrors().stream()
@@ -90,8 +97,8 @@ public class TheatreRest {
                     .reduce("Errors:", (acc, msg) -> acc + " | " + msg);
             return ResponseEntity.badRequest().body(errorMessage);
         }
-        Theatre saved = theatreService.addTheatre(theatre);
-        log.info("New theatre added: {}", saved);
+        Theatre saved = theatreService.addTheatre(Theatre);
+        log.info("New Theatre added: {}", saved);
         return ResponseEntity
                 .created(
                         ServletUriComponentsBuilder
