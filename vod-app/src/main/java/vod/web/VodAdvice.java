@@ -29,11 +29,11 @@ public class VodAdvice {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArg(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body("IllegalArgument: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntime(RuntimeException ex) {
-        return ResponseEntity.badRequest().body("Error: " + ex.getMessage());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.LOOP_DETECTED).body(ex.getMessage());
     }
 }

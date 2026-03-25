@@ -1,5 +1,6 @@
 package vod.repository.data;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import vod.model.Theatre;
@@ -9,14 +10,11 @@ import vod.repository.TheatreDao;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 @Primary
 public class DataTheatreDao implements TheatreDao {
 
     private final TheatreRepository repository;
-
-    public DataTheatreDao(TheatreRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<Theatre> findAll() {

@@ -1,6 +1,9 @@
 package vod.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import vod.model.Director;
 import vod.model.Movie;
 import vod.repository.DirectorDao;
@@ -12,19 +15,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServiceBean implements MovieService {
 
     private static final Logger log = Logger.getLogger(MovieService.class.getName());
 
-    private DirectorDao directorDao;
-    private TheatreDao theatreDao;
-    private MovieDao movieDao;
-
-    public MovieServiceBean(DirectorDao directorDao, TheatreDao theatreDao, MovieDao movieDao) {
-        this.directorDao = directorDao;
-        this.theatreDao = theatreDao;
-        this.movieDao = movieDao;
-    }
+    private final DirectorDao directorDao;
+    private final TheatreDao theatreDao;
+    private final MovieDao movieDao;
 
     @Override
     public List<Movie> getAllMovies() {
@@ -44,10 +42,15 @@ public class MovieServiceBean implements MovieService {
         return movieDao.findById(id);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Movie addMovie(Movie m) {
         log.info("about to add movie " + m);
-        return movieDao.add(m);
+        m = movieDao.add(m);
+        if (m.getTitle().equals("Dziady")) {
+            throw new RuntimeException("not yet!");
+        }
+        return m;
     }
 
     @Override

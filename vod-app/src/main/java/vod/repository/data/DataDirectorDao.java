@@ -1,5 +1,6 @@
 package vod.repository.data;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import vod.model.Director;
@@ -8,14 +9,11 @@ import vod.repository.DirectorDao;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 @Primary
 public class DataDirectorDao implements DirectorDao {
 
     private final DirectorRepository repository;
-
-    public DataDirectorDao(DirectorRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public List<Director> findAll() {
