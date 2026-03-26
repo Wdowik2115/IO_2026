@@ -1,6 +1,7 @@
 package vod.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,7 @@ public class MovieServiceBean implements MovieService {
         return movieDao.findById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Movie addMovie(Movie m) {
@@ -65,6 +67,7 @@ public class MovieServiceBean implements MovieService {
         return directorDao.findById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Director addDirector(Director d) {
         log.info("about to add director " + d);

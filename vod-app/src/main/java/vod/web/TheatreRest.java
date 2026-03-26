@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +92,11 @@ public class TheatreRest {
             Errors errors,
             HttpServletRequest request) {
         log.info("POST /webapi/Theatres, body: {}", Theatre);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("authentication: {}", authentication);
+        log.info("authentication name: {}", authentication.getName());
+
         if (errors.hasErrors()) {
             Locale locale = localeResolver.resolveLocale(request);
             String errorMessage = errors.getAllErrors().stream()

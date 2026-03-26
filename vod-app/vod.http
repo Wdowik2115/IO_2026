@@ -1,0 +1,49 @@
+### 1. Pobieranie teatrów - Dostęp publiczny (Każdy może zobaczyć)
+GET http://localhost:8080/webapi/theatres
+
+### 2. Pobieranie filmów - Dostęp publiczny
+GET http://localhost:8080/webapi/movies
+
+### 3. Dodawanie teatru - Brak logowania (Powinno zwrócić 401 Unauthorized)
+POST http://localhost:8080/webapi/theatres
+Content-Type: application/json
+
+{
+  "name": "Teatr Narodowy",
+  "logo": "https://example.com/logo_narodowy.png"
+}
+
+### 4. Dodawanie teatru - Zwykły użytkownik (dbuser2 - rola REGULAR)
+### Powinno zwrócić 403 Forbidden (Użytkownik zalogowany, ale bez uprawnień ADMIN)
+POST http://localhost:8080/webapi/theatres
+Authorization: Basic dbuser2 dbuser2
+Content-Type: application/json
+
+{
+  "name": "Teatr Narodowy",
+  "logo": "https://example.com/logo_narodowy.png"
+}
+
+### 5. Dodawanie teatru - Administrator (dbuser1 - rola ADMIN)
+### Powinno zwrócić 201 Created (Sukces!)
+POST http://localhost:8080/webapi/theatres
+Authorization: Basic dbuser1 dbuser1
+Content-Type: application/json
+
+{
+  "name": "Teatr Narodowy",
+  "logo": "https://example.com/logo_narodowy.png"
+}
+
+### 6. Dodawanie filmu - Administrator (dbuser1 - rola ADMIN)
+### Powinno zwrócić 201 Created
+POST http://localhost:8080/webapi/movies
+Authorization: Basic dbuser1 dbuser1
+Content-Type: application/json
+
+{
+  "title": "Kordian",
+  "poster": "https://example.com/kordian.jpg",
+  "rating": 9.5,
+  "directorId": 1
+}

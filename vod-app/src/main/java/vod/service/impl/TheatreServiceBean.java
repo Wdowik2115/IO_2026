@@ -1,5 +1,6 @@
 package vod.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import vod.model.Movie;
 import vod.model.Theatre;
@@ -48,6 +49,7 @@ public class TheatreServiceBean implements TheatreService {
         return movieDao.findByTheatre(t);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Theatre addTheatre(Theatre t) {
         log.info("about to add Theatre " + t);
